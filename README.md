@@ -4,6 +4,10 @@ NewsBlur saved stories converter to import WordPress
 
 It is NOT affiliated with NewsBlur nor WordPress. Not at all.
 
+This script is very crude, only satisfied my own one-time requirement. Some codes were copy-and-pasted web q-and-a pages, not really cleaned out.
+
+I could just throw away this script, but think that there would be someone in future who fall into this rare situation between NewsBlur and WordPress.
+
 ## Preparation
 
 You first export items from NewsBlur by jmorahan's newsblur-export.
@@ -13,7 +17,6 @@ https://github.com/jmorahan/newsblur-export
   * configure user/password
   * run the script
   * you will get an exported file "starred_stories.json" in current directory.
-
 ## Usage
 
 $ git clone https://github.com/akky/newsblur2wordpress.git
