@@ -65,16 +65,23 @@ function remove_utm_parameters($url) {
     return $results;
 }
 
-// make slug from title
-//
-//  Actually, this must call WP's function sanitize_file_name()
-//  for non-ASCII titles. see wp-include/formatting.php
-//
-//  You may need your special slug function if you want so reproduce
-//  the original permalink for each articles.
+/*
+  make slug like as WordPress does.
+
+  Ideally, copying WP's function sanitize_file_name() would be perfect
+  for non-ASCII titles. see wp-include/formatting.php
+
+  Here non-ASCII codes are just urlencoded. Just because my data were
+  good enough with that. (You may need to copy WP's official function
+  for your data.)
+ */
 function sluggify($text)
 {
-    return preg_replace("|[^a-z0-9]+|", "-", strtolower($text));
+    if (mb_detect_encoding($text, 'ASCII', true)) {
+        return preg_replace("|[^a-z0-9]+|", "-", strtolower($text));
+    } else {
+        return urlencode($text);
+    }
 }
 
 // -----------------------------------------------------
