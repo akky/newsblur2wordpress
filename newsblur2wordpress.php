@@ -65,6 +65,13 @@ function remove_utm_parameters($url) {
     return $results;
 }
 
+function convert_smart_quotes($text) {
+    $text = str_replace('–', '-', $text);
+    $text = str_replace(['“','”'], '"', $text);
+    $text = str_replace(['’'], "'", $text);
+    return $text;
+}
+
 /*
   make slug like as WordPress does.
 
@@ -77,8 +84,13 @@ function remove_utm_parameters($url) {
  */
 function sluggify($text)
 {
+    $text = strtolower($text);
+
+    // exporeted newsblur has quotes in Unicode. convert them to ASCII
+    $text = convert_smart_quotes($text);
+
     if (mb_detect_encoding($text, 'ASCII', true)) {
-        return preg_replace("|[^a-z0-9]+|", "-", strtolower($text));
+        return preg_replace("|[^a-z0-9]+|", "-", $text);
     } else {
         return urlencode($text);
     }
@@ -139,6 +151,8 @@ foreach ($json["stories"] as $item)
 
     $pubDate = $rssItem->addChild("pubDate", gmdate("D, j M Y G:i:s O", $item["story_timestamp"]));
 
+    $rssItem->addChild("post_date", date("Y-m-d H:i:s", $item["story_timestamp"]), $namespaces["wp"]);
+
     if (isset($item["story_authors"]))
     {
         $rssCreator = $rssItem->addChild("creator", null, $namespaces["dc"]);
@@ -186,19 +200,27 @@ foreach ($json["stories"] as $item)
     $rssItem->addChild("post_password", "", $namespaces["wp"]); // TODO make configurable
     $rssItem->addChild("is_sticky", 0, $namespaces["wp"]);      // TODO make configurable
 
+    // the first tag in comments seem to be the original WordPress category
+    $theFirstTag = null;
     foreach($item["story_tags"] as $story_tag)
     {
         $rssCategory = $rssItem->addChild("category", null);
         $rssCategory->addCData($story_tag);
         $rssCategory->addAttribute("domain", "post_tag");
         $rssCategory->addAttribute("nicename", sluggify($story_tag));
+        if (is_null($theFirstTag)) {
+            $theFirstTag = $story_tag;
+        }
     }
 
+    if (is_null($theFirstTag)) {
+        $theFirstTag = 'Japan';
+    }
     // set default category - should be configurable
     $rssCategory = $rssItem->addChild("category", null);
-    $rssCategory->addCData('Japan');
+    $rssCategory->addCData($theFirstTag);
     $rssCategory->addAttribute("domain", "category");
-    $rssCategory->addAttribute("nicename", sluggify('Japan'));
+    $rssCategory->addAttribute("nicename", sluggify($theFirstTag));
 }
 
 // indent

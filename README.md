@@ -1,6 +1,6 @@
 # newsblur2wordpress
 
-NewsBlur saved stories converter to import WordPress
+This is a tool to convert the saved NewsBlur stories to WordPress import format.
 
 It is NOT affiliated with NewsBlur nor WordPress. Not at all.
 
@@ -17,6 +17,7 @@ https://github.com/jmorahan/newsblur-export
   * configure user/password
   * run the script
   * you will get an exported file "starred_stories.json" in current directory.
+
 ## Usage
 
 $ git clone https://github.com/akky/newsblur2wordpress.git
@@ -31,14 +32,12 @@ which read the exported file "starred_stories.json" in current directory, genera
 
 ## ToDo
 
-I likely will not implement these, because there would be no another needs which I lost my blog articles and try to resume them from NewsBlur.
+As I had already solved my own problem, probably no future updates on this code. Send PR if you fix something. The followings may be good to have.
 
-make things more customizable
-
-  * input and output filenames
+  * input and output filenames from parameters
   * WordPress blog address to import
   * category name to import
 
 known bugs
 
-  * non-ASCII category/tag names generated invalid slug
+  * non-ASCII category/tag names generated incompatible slug from the official WordPress (If you do not like the URLs changed by this, you may need to copy WP's slug function into this script.)
