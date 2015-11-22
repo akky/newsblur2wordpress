@@ -125,7 +125,7 @@ $channel = $rss->addChild("channel");
 $channel->addChild("generator", basename(__FILE__));
 $channel->addChild("wxr_version", "1.2", $namespaces["wp"]);
 // base_site_url is MUST. WordPress Importer warns if this does not exist
-$channel->addChild("base_site_url", "http://akimotojp/blog", $namespaces["wp"]);
+$channel->addChild("base_site_url", "http://asiajin.com/blog", $namespaces["wp"]);
 
 foreach ($json["stories"] as $item)
 {
